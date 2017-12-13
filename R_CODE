@@ -1,0 +1,18 @@
+setwd("C:/Users/jmclaughlin/Desktop")
+
+install.packages('stringdist')
+library(stringdist)
+
+FuzzyMaster <- read.csv(file="itemdescmaster.txt", header = TRUE, sep = '~')
+OctoberNulls <- read.csv(file="OctoberNulls.txt", header = TRUE, sep = '~')
+
+start.time <- Sys.time()
+fuzzyresults1 <- sapply(OctoberNulls$ITEM.DESC, function(i) max(stringsim(i, FuzzyMaster$ya_facility_item_description, method = 'jw')))
+end.time <- Sys.time()
+time.taken <- end.time - start.time
+time.taken
+
+OctoberNulls$description_similarity <- fuzzyresults1
+head(OctoberNulls)
+
+write.csv(OctoberNulls, "OctoberNulls_Percentages.txt")
